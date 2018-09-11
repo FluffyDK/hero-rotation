@@ -1,82 +1,82 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
-  -- Addon
-  local addonName, addonTable = ...;
-  -- HeroLib
-  local HL = HeroLib;
-  local Cache = HeroCache;
-  local Unit = HL.Unit;
-  local Player = Unit.Player;
-  local Target = Unit.Target;
-  local Spell = HL.Spell;
-  local Item = HL.Item;
-  -- HeroRotation
-  local HR = HeroRotation;
-  -- Lua
+-- Addon
+local addonName, addonTable = ...;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+local Spell = HL.Spell;
+local Item = HL.Item;
+-- HeroRotation
+local HR = HeroRotation;
+-- Lua
 
 
 --- ============================ CONTENT ============================
 --- ======= APL LOCALS =======
-  local Everyone = HR.Commons.Everyone;
-  local DeathKnight = HR.Commons.DeathKnight;
-  -- Spells
-  if not Spell.DeathKnight then Spell.DeathKnight = {}; end
-  Spell.DeathKnight.Blood = {
-    -- Racials
-    ArcaneTorrent         = Spell(50613),
-    Berserking            = Spell(26297),
-    BloodFury             = Spell(20572),
-    -- Abilities
-    BloodBoil             = Spell(50842),
-    Blooddrinker          = Spell(206931),
-    BloodMirror           = Spell(206977),
-    BloodPlague           = Spell(55078),
-    BloodShield           = Spell(77535),
-    BoneShield            = Spell(195181),
-    Bonestorm             = Spell(194844),
-    Consumption           = Spell(205223),
-    CrimsonScourge        = Spell(81141),
-    DancingRuneWeapon     = Spell(49028),
-    DancingRuneWeaponBuff = Spell(81256),
-    DeathandDecay         = Spell(43265),
-    DeathsCaress          = Spell(195292),
-    DeathStrike           = Spell(49998),
-    HeartBreaker          = Spell(221536),
-    HeartStrike           = Spell(206930),
-    Marrowrend            = Spell(195182),
-    MindFreeze            = Spell(47528),
-    Ossuary               = Spell(219786),
-    RapidDecomposition    = Spell(194662),
-    RuneStrike            = Spell(210764),
-    RuneTap               = Spell(194679),
-    VampiricBlood         = Spell(55233),
-    -- Legendaries
-    HaemostasisBuff       = Spell(235558),
-    -- Misc
-    Pool            = Spell(9999000010)
-  };
-  local S = Spell.DeathKnight.Blood;
-  if not Item.DeathKnight then Item.DeathKnight = {}; end
-    Item.DeathKnight.Blood = {
-    --Legendaries
-    --Potion
-    ProlongedPower = Item(142117)
-  };
-  local I = Item.DeathKnight.Blood;
-  -- GUI Settings
-  local Settings = {
-    General = HR.GUISettings.General,
-    Commons = HR.GUISettings.APL.DeathKnight.Commons,
-    Blood = HR.GUISettings.APL.DeathKnight.Blood
-  };
+local Everyone = HR.Commons.Everyone;
+local DeathKnight = HR.Commons.DeathKnight;
+-- Spells
+if not Spell.DeathKnight then Spell.DeathKnight = {}; end
+Spell.DeathKnight.Blood = {
+  -- Racials
+  ArcaneTorrent         = Spell(50613),
+  Berserking            = Spell(26297),
+  BloodFury             = Spell(20572),
+  -- Abilities
+  BloodBoil             = Spell(50842),
+  Blooddrinker          = Spell(206931),
+  BloodMirror           = Spell(206977),
+  BloodPlague           = Spell(55078),
+  BloodShield           = Spell(77535),
+  BoneShield            = Spell(195181),
+  Bonestorm             = Spell(194844),
+  Consumption           = Spell(205223),
+  CrimsonScourge        = Spell(81141),
+  DancingRuneWeapon     = Spell(49028),
+  DancingRuneWeaponBuff = Spell(81256),
+  DeathandDecay         = Spell(43265),
+  DeathsCaress          = Spell(195292),
+  DeathStrike           = Spell(49998),
+  HeartBreaker          = Spell(221536),
+  HeartStrike           = Spell(206930),
+  Marrowrend            = Spell(195182),
+  MindFreeze            = Spell(47528),
+  Ossuary               = Spell(219786),
+  RapidDecomposition    = Spell(194662),
+  RuneStrike            = Spell(210764),
+  RuneTap               = Spell(194679),
+  VampiricBlood         = Spell(55233),
+  -- Legendaries
+  HaemostasisBuff       = Spell(235558),
+  -- Misc
+  Pool            = Spell(9999000010)
+};
+local S = Spell.DeathKnight.Blood;
+if not Item.DeathKnight then Item.DeathKnight = {}; end
+Item.DeathKnight.Blood = {
+  --Legendaries
+  --Potion
+  ProlongedPower = Item(142117)
+};
+local I = Item.DeathKnight.Blood;
+-- GUI Settings
+local Settings = {
+  General = HR.GUISettings.General,
+  Commons = HR.GUISettings.APL.DeathKnight.Commons,
+  Blood = HR.GUISettings.APL.DeathKnight.Blood
+};
 
 
 --- ======= ACTION LISTS =======
-  
+
 
 
 --- ======= MAIN =======
-local function APL ()
+local function APL()
   -- Unit Update
   HL.GetEnemies("Melee");
   HL.GetEnemies(8, true); -- Death and Decay & Bonestorm
@@ -115,7 +115,7 @@ local function APL ()
     -- Bone Shield
     if S.Marrowrend:IsCastableP("Melee") and (Player:BuffRemainsP(S.BoneShield) <= 6 or (Target:TimeToDie() < 5 and Player:BuffRemainsP(S.BoneShield) < 10 and Cache.EnemiesCount[5] == 1)) then
       if HR.Cast(S.Marrowrend) then return ""; end
-    end 
+    end
     -- Healing
     if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 50 + (Player:RunicPower() > 90 and 20 or 0) and not Player:HealingAbsorbed() then
       if HR.Cast(S.DeathStrike) then return ""; end
@@ -161,7 +161,7 @@ local function APL ()
       if HR.Cast(S.DeathStrike, Settings.Blood.GCDasOffGCD.Blooddrinker) then return ""; end
     end
     -- Marrowrend: Refresh Bone Shield
-    if S.Marrowrend:IsCastableP("Melee") and ((not (Player:Buff(S.DancingRuneWeaponBuff)) and Player:BuffStack(S.BoneShield) <=7) or Player:BuffStack(S.BoneShield) <= 4) and Player:RunicPowerDeficit() >= 20 then
+    if S.Marrowrend:IsCastableP("Melee") and ((not (Player:Buff(S.DancingRuneWeaponBuff)) and Player:BuffStack(S.BoneShield) <= 7) or Player:BuffStack(S.BoneShield) <= 4) and Player:RunicPowerDeficit() >= 20 then
       if HR.Cast(S.Marrowrend) then return ""; end
     end
     -- Death Strike: Marrowrend Runic Power Dump
@@ -173,7 +173,7 @@ local function APL ()
       if HR.Cast(S.DeathandDecay) then return ""; end
     end
     -- Heart Strike
-    if S.HeartStrike:IsCastableP("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >=3) and (Player:RunicPowerDeficit()>= 15 or (S.HeartBreaker:IsAvailable() and Player:Buff(S.DeathandDecay) and Player:RunicPowerDeficit() >= (15 + math.min(Cache.EnemiesCount["Melee"], 5) * 2))) then
+    if S.HeartStrike:IsCastableP("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) and (Player:RunicPowerDeficit() >= 15 or (S.HeartBreaker:IsAvailable() and Player:Buff(S.DeathandDecay) and Player:RunicPowerDeficit() >= (15 + math.min(Cache.EnemiesCount["Melee"], 5) * 2))) then
       if HR.Cast(S.HeartStrike) then return ""; end
     end
     -- Death Strike: Heart Strike Runic Power Dump
@@ -194,7 +194,7 @@ local function APL ()
     end
     -- Death's Caress Pull
     if S.DeathsCaress:IsCastableP(30) and not Target:IsInRange(10) and not Target:Debuff(S.BloodPlague) then
-      if HR.Cast(S.DeathsCaress) then return "";end
+      if HR.Cast(S.DeathsCaress) then return ""; end
     end
     -- Blood Boil: Max Charges
     if S.BloodBoil:IsCastableP() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:Charges() == 2 then
@@ -210,7 +210,7 @@ local function APL ()
     end
     -- Out of Range
     if S.DeathsCaress:IsCastableP(30) and Player:Runes() > 3 then
-      if HR.Cast(S.DeathsCaress) then return "";end
+      if HR.Cast(S.DeathsCaress) then return ""; end
     end
     -- Trick to take in consideration the Recovery Setting
     if S.HeartStrike:IsCastable("Melee") then
